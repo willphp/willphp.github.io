@@ -1,6 +1,6 @@
 ### 框架简介 :id=about
 
-WillPHP是一个超轻量级MVC框架！QQ群1：325825297 QQ群2：16008861
+WillPHP是一个超轻量级PHP8 MVC框架！QQ群1：325825297 QQ群2：16008861
 
 [官方网站](http://www.113344.com) | 
 [在线手册](https://willphp.gitee.io) |

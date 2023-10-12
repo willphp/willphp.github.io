@@ -32,35 +32,6 @@
 'cid(:num)_p(:num)' => 'index/index/cid/${1}p/${2}',
 ```
 
-## 伪静态
-
-可以在`config/app.php`中开启：
-
-```php
-'url_rewrite' => true,
-```
-
-apache规则设置`public/.htaccess`文件：
-
-```
-<IfModule mod_rewrite.c>
-  Options +FollowSymlinks -Multiviews
-  RewriteEngine On
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
-</IfModule>
-```
-nginx规则设置`public/nginx.htaccess`文件：
-
-```
-location / {
-	if (!-e $request_filename) {
-		rewrite  ^(.*)$  /index.php/$1  last;
-	}
-}
-```
-
 ## URL生成
 
 url函数会根据当前应用路由设置生成对应url链接。格式如下：

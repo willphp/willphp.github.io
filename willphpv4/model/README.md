@@ -12,7 +12,7 @@ class Cate extends Model
     protected string $pk = 'id'; //主键
     
     //自动格式化时间(create_time字段)
-    public function getCreateTimeAttr($val) {
+    public function getCreateTimeAttr($val, array $data) {
         return date('Y-m-d H:i', $val);
     }
 }

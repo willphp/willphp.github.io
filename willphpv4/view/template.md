@@ -23,7 +23,22 @@ Powered By __POWERED__ 主题:__THEME__
 #### 包含文件
 
 ```
-{include 'public/header.html'}
+{include file='public/header.html'}
+```
+
+#### 模板布局
+
+```
+{layout name='layout/layout.html'}
+主体内容
+```
+
+#### 布局文件
+
+```
+{include file='public/header.html'}
+{__CONTENT__}
+{include file='public/footer.html'}
 ```
 
 #### 变量赋值
@@ -43,6 +58,8 @@ Powered By __POWERED__ 主题:__THEME__
 {$arr.0.a.b}
 {$arr[$cid]}
 {$arr[$vo['cid']]}
+{$vo.name|default='默认值'} //变量设置默认值 
+{session('user.nickname') ?: '游客'} //表量或表达式设置默认
 ```
 
 #### 变量操作
@@ -65,6 +82,7 @@ Powered By __POWERED__ 主题:__THEME__
 
 ```
 {php $id=2}
+{if $id==2 ? '2' : '0'} //三元运算
 {if $id==1 or $id==2:} id=1|2 {/if}
 {if $id==1:} id=1 {else:} id<>1 {/if}
 {if $id==1:} id=1 {elseif $id==2:} id=2 {else:} id<>1|2 {/if}

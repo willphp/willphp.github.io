@@ -8,7 +8,7 @@ namespace app\index\widget;
 use willphp\core\Widget;
 class Test extends Widget
 {
-    protected string $table = 'test'; //表名标识(用于自动更新)
+    protected string $tagName = 'test'; //表名标识(用于自动更新)
     protected int $expire = 0; //缓存时间(秒) 0永久
      //设置部件数据(必须)
     public function set($id = '', array $options = [])
