@@ -1,39 +1,39 @@
-## 模板语法
+## Template Syntax
 
-#### 常量输出
+#### Constant Output
 
-| 常量              | 说明      |
-|-----------------|---------|
-| \_\_VERSION\_\_ | 框架版本    |
-| \_\_POWERED\_\_ | 框架名+版本号 |
-| \_\_WEB\_\_     | 相对URL   |
-| \_\_URL\_\_     | 当前URL   |
-| \_\_HISTORY\_\_ | 来源URL   |
-| \_\_ROOT\_\_    | 根路径     |
-| \_\_STATIC\_\_  | 资源目录    |
-| \_\_UPLOAD\_\_  | 上传目录    |
-| \_\_THEME\_\_   | 当前主题名   |
+| Constant         | Description |
+|------------------|-------------|
+| \_\_VERSION\_\_  | Framework version |
+| \_\_POWERED\_\_  | Framework name + version number |
+| \_\_WEB\_\_      | Relative URL |
+| \_\_URL\_\_      | Current URL |
+| \_\_HISTORY\_\_  | Source URL |
+| \_\_ROOT\_\_     | Root path |
+| \_\_STATIC\_\_   | Resource directory |
+| \_\_UPLOAD\_\_   | Upload directory |
+| \_\_THEME\_\_    | Current theme name |
 
-以上常量可以在模板中直接输出，如：
+The above constants can be directly output in the template, for example:
 
 ```
-Powered By __POWERED__ 主题:__THEME__
+Powered By __POWERED__ Theme:__THEME__
 ```
 
-#### 包含文件
+#### Including Files
 
 ```
 {include file='public/header.html'}
 ```
 
-#### 模板布局
+#### Template Layout
 
 ```
 {layout name='layout/layout.html'}
-主体内容
+Main Content
 ```
 
-#### 布局文件
+#### Layout File
 
 ```
 {include file='public/header.html'}
@@ -41,7 +41,7 @@ Powered By __POWERED__ 主题:__THEME__
 {include file='public/footer.html'}
 ```
 
-#### 变量赋值
+#### Variable Assignment
 
 ```
 {php $hello='hello WillPHP'}
@@ -49,7 +49,7 @@ Powered By __POWERED__ 主题:__THEME__
 {php $list=db('user')->where('status',1)->select()}
 ```
 
-#### 变量输出
+#### Variable Output
 
 ```
 {$hello}
@@ -58,11 +58,11 @@ Powered By __POWERED__ 主题:__THEME__
 {$arr.0.a.b}
 {$arr[$cid]}
 {$arr[$vo['cid']]}
-{$vo.name|default='默认值'} //变量设置默认值 
-{session('user.nickname') ?: '游客'} //表量或表达式设置默认
+{$vo.name|default='default value'} // Variable setting default value
+{session('user.nickname') ?: 'Guest'} // Variable or expression setting default
 ```
 
-#### 变量操作
+#### Variable Operations
 
 ```
 {$id|intval}
@@ -70,7 +70,7 @@ Powered By __POWERED__ 主题:__THEME__
 {$list->links()}
 ```
 
-#### 函数输出
+#### Function Output
 
 ```
 {:date('Y-m-d',$vo['ctime'])} 
@@ -78,11 +78,11 @@ Powered By __POWERED__ 主题:__THEME__
 {:widget('test')->get()}
 ```
 
-#### 条件语句
+#### Conditional Statements
 
 ```
 {php $id=2}
-{if $id==2 ? '2' : '0'} //三元运算
+{if $id==2 ? '2' : '0'} // Ternary operation
 {if $id==1 or $id==2:} id=1|2 {/if}
 {if $id==1:} id=1 {else:} id<>1 {/if}
 {if $id==1:} id=1 {elseif $id==2:} id=2 {else:} id<>1|2 {/if}
@@ -90,7 +90,7 @@ Powered By __POWERED__ 主题:__THEME__
 {empty $none:} none {/empty}
 ```
 
-#### 偱环语句
+#### Loop Statements
 
 ```
 {php $arr=[['id'=>1,'name'=>'a'],['id'=>2,'name'=>'b']]}
@@ -102,110 +102,110 @@ Powered By __POWERED__ 主题:__THEME__
 {/foreach}
 ```
 
-#### 原样输出
+#### Output Raw Content
 
 ```
 {literal}
     {$hello}
 {/literal}
-__#POWERED#__ //输出：__POWERED__
-{#$hello#} //输出：{$hello}
+__#POWERED#__ // Output: __POWERED__
+{#$hello#} // Output: {$hello}
 ```
 
-## 自定标签
+## Custom Tags
 
-所有标签替换设置在`config/template.php`配置文件中，可自由设置规则替换。
+All tag replacement settings are in the `config/template.php` configuration file, and rules can be freely set for replacement.
 
-#### 修改标签，如：
+#### Modify Tags, e.g.,
 
 ```
 'regex_literal' => '/{lite}(.*?){\/lite}/s',
 ```
 
-修改后效果：
+Effect after modification:
 
 ```
 {php $hi='hello'}
-失效：{literal}{$hi}{/literal}
-成功：{lite}{$hi}{/lite}
+Failed: {literal}{$hi}{/literal}
+Success: {lite}{$hi}{/lite}
 ```
 
-#### 添加标签，如：
+#### Add Tags, e.g.,
 
 ```
-//在regex_replace配置中加入{haha:$变量名}
+// Add {haha:$variable} in the regex_replace configuration
 '/{\s*haha:\$var\s*}/i' => '<?php echo $\\1.' haha'?>',
 ```
 
-添加后效果：
+Effect after addition:
 
 ```
 {php $hi='hello'}
-{haha:$hi} //显示 hello haha
+{haha:$hi} // Displays hello haha
 ```
 
->注意：在regex_replace中 key var { } 是会自动替换成相应配置
+>Note: In regex_replace, key var { } will be automatically replaced with the corresponding configuration
 
-## 开发示例
+## Development Examples
 
-#### 数据分页
+#### Data Pagination
 
 ```
-获取数据：
+Get data:
 {php $list=db('site')->where('id','>',0)->order('id DESC')->paginate(2)}
-数据为空：
+Data is empty:
 {empty $list->toArray():}none{/empty}
-偱环输出：
+Loop output:
 {foreach $list as $vo}
     {$vo.id}.{$vo.cname}
 {/foreach}
-分页html：
+Pagination HTML:
 {$list->links()}
-总记录数：
+Total records:
 {$list->getAttr('count')} 
-当前页码：
+Current page number:
 {$list->getAttr('page')} 
-开始数：
+Start count:
 {$list->getAttr('offset')}
-每页记录数：
+Number of records per page:
 {$list->getAttr('page_size')}
-总页数：
+Total number of pages:
 {$list->getAttr('page_count')}
 ```
 
-#### 获取配置
+#### Get Configuration
 
 ```
-{:site('site_title')} 等于 {:config('site.site_title')}
+{:site('site_title')} equals {:config('site.site_title')}
 ```
 
-#### 生成URL
+#### Generate URL
 
 ```
 {:url('blog/about')}
 ```
 
-#### 格式化时间
+#### Format Time
 
 ```
 {php $vo['ctime']=time()}
 {:date('Y-m-d',$vo['ctime'])} 
 ```
 
-#### 字符串截取
+#### String Substring
 
 ```
 {php $title='hello world'}
 {$title|str_substr=0,5}
 ```
 
-#### 获取IP地址
+#### Get IP Address
 
 ```
 {:get_ip()}
 ```
 
-#### 验证码图片
+#### Captcha Image
 
 ```
 <img src="{:url('api/captcha')}" style="cursor:pointer;" onclick="this.src='{:url('api/captcha')}?'+Math.random();"/>

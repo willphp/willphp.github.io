@@ -1,32 +1,33 @@
-## 视图配置
+## View Configuration
 
-#### 模板路径
+#### Template Paths
 
-可在`config/app.php`中配置应用的视图方式，如：
+You can configure the view paths for your application in `config/app.php`, as shown below:
 
 ```php
-'view_path' => ['index' => 'view'], //设置index模板路径为根目录view
-'theme_on' => ['index'], //设置index为多主题
+'view_path' => ['index' => 'view'], // Set the index template path to the root directory view
+'theme_on' => ['index'], // Set index as multi-theme
 ```
-#### 主题切换
 
-应用的默认主题在`config/site.php`中设置：
+#### Theme Switching
+
+The default theme for the application is set in `config/site.php`:
 
 ```php
 'theme' => 'default',
 ```
 
-可通过GET参数切换主题，切换后主题存于cookie中，如：
+You can switch themes by using GET parameters, and the selected theme will be stored in a cookie, for example:
 
 ```php
-?t=blue //切换blue主题存于cookie
+?t=blue // Switch to the blue theme and store it in a cookie
 ```
 
->当主题不存在，则使用`default`主题
+>If the selected theme does not exist, the `default` theme will be used.
 
-## 赋值渲染
+## Value Rendering
 
-可在控制器中对视图变量赋值与渲染，如：
+You can assign and render view variables in your controller, as demonstrated below:
 
 ```php
 public function index(): object
