@@ -1,52 +1,51 @@
-### 目录结构
+### Directory Structure
 ```
-www  WEB部署目录(或者子目录)
-├─app                   应用目录
-│  ├─index              默认应用
-│  │  ├─config          配置
-│  │  ├─controller      控制器
-│  │  ├─model           模型
-│  │  ├─view            视图
-│  │  └─widget          部件
-│  |
-│  └─common.php         公共函数
+www  WEB deployment directory (or subdirectory)
+├─app                   Application directory
+│  ├─index              Default application
+│  │  ├─config          Configuration
+│  │  ├─controller      Controllers
+│  │  ├─model           Models
+│  │  ├─view            Views
+│  │  └─widget          Widgets
+│  └─common.php         Common functions
 │
-├─config                配置目录
-│  ├─app.php            应用
-│  ├─cache.php          缓存
+├─config                Configuration directory
+│  ├─app.php            Application
+│  ├─cache.php          Cache
 │  ├─cookie.php         Cookie
-│  ├─database.php       数据库
-│  ├─debugbar.php       调试栏
-│  ├─filter.php         自动过滤
-│  ├─middleware.php     中间件
-│  ├─page.php           分页
-│  ├─response.php       响应
-│  ├─route.php          路由
+│  ├─database.php       Database
+│  ├─debugbar.php       Debug bar
+│  ├─filter.php         Automatic filtering
+│  ├─middleware.php     Middleware
+│  ├─page.php           Pagination
+│  ├─response.php       Response
+│  ├─route.php          Routing
 │  ├─session.php        Session
-│  ├─site.php           网站  
-│  ├─template.php       模板引擎
-│  ├─upload.php         上传设置
-│  ├─validate.php       验证规则
-│  └─view.php           视图
+│  ├─site.php           Website  
+│  ├─template.php       Template engine
+│  ├─upload.php         Upload settings
+│  ├─validate.php       Validation rules
+│  └─view.php           View
 │
-├─public                WEB目录(对外访问目录)
-│  ├─static             网站静态资源目录(css,js,img)
-│  ├─uploads            图片上传目录(可写)
-│  ├─index.php          入口文件
-│  ├─.htaccess          apache重写
-│  └─nginx.htaccess     nginx重写
+├─public                WEB directory (public access directory)
+│  ├─static             Website static resource directory (css, js, img)
+│  ├─uploads            Image upload directory (writable)
+│  ├─index.php          Entry file
+│  ├─.htaccess          Apache rewrite
+│  └─nginx.htaccess     Nginx rewrite
 |
-├─extend                扩展类库        
-├─middleware            中间件
-├─route                 路由设置
-├─runtime               应用运行时目录(可写)
-├─template              前台模板
-├─willphp               框架目录
-├─vendor                composer类库(可选)
+├─extend                Extended library        
+├─middleware            Middleware
+├─route                 Routing configuration
+├─runtime               Application runtime directory (writable)
+├─template              Front-end templates
+├─willphp               Framework directory
+├─vendor                Composer libraries (optional)
 |
-├─env.example.env       .env示例文件
-├─composer.json         composer定义文件
-├─.gitignore            git设置
-├─LICENSE               授权协议
-└─README.md             README文件    
+├─env.example.env       .env example file
+├─composer.json         Composer definition file
+├─.gitignore            Git settings
+├─LICENSE               License agreement
+└─README.md             README file    
 ```

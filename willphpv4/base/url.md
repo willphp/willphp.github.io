@@ -1,44 +1,44 @@
-### 入口文件
+### Entry File
 
-默认入口文件位于`public/index.php`，代码如下：
+The default entry file is located at `public/index.php`, and the code is as follows:
 
 ```php
-declare(strict_types=1); //严格模式
+declare(strict_types=1); // Strict mode
 namespace willphp\core; 
-header('Content-type: text/html; charset=utf-8'); //编码
-date_default_timezone_set('PRC'); //时区
-define('ROOT_PATH', strtr(realpath(__DIR__ . '/../'), '\\', '/')); //根路径
-require ROOT_PATH . '/willphp/bootstrap.php'; //引导文件
-App::init()->boot(); //默认绑定index应用(文件名)
+header('Content-type: text/html; charset=utf-8'); // Encoding
+date_default_timezone_set('PRC'); // Timezone
+define('ROOT_PATH', strtr(realpath(__DIR__ . '/../'), '\\', '/')); // Root path
+require ROOT_PATH . '/willphp/bootstrap.php'; // Bootstrap file
+App::init()->boot(); // Default binding to the index application (file name)
 ```
 
-### 应用绑定
+### Application Binding
 
-在`App::init()`可设置绑定应用或根据域名绑定应用，如：
+In `App::init()`, you can set the binding application or bind the application based on the domain name, such as:
 
 ```php
-//App::init(['admin']) //指定应用admin
-//绑定www.a.io admin.a.io api.b.io三个域名来访问三个应用
+// App::init(['admin']) // Specify the admin application
+// Bind three domains www.a.io admin.a.io api.b.io to access three applications
 App::init(['*' => 'index', 'admin' => 'admin', 'api.b.io' => 'api'])
 ```
 
->可设置多入口文件来访问应用，如admin.php(代码同index.php)
+> You can set multiple entry files to access applications, such as admin.php (same code as index.php).
 
-### URL访问
+### URL Access
 
 ```
-http://serverName/index.php（或其它入口）/控制器/操作/参数/值…
+http://serverName/index.php（or other entry）/Controller/Action/Parameter/Value…
 ```
 
-### URL重写
+### URL Rewrite
 
-隐藏入口文件`index.php`，可以在`config/app.php`中开启url重写：
+To hide the entry file `index.php`, you can enable URL rewrite in `config/app.php`:
 
 ```
 'url_rewrite' => true,
 ```
 
-Apache环境规则`public/.htaccess`文件：
+Apache environment rules in `public/.htaccess` file:
 
 ```
 <IfModule mod_rewrite.c>
@@ -50,7 +50,7 @@ Apache环境规则`public/.htaccess`文件：
 </IfModule>
 ```
 
-Nginx环境规则`public/nginx.htaccess`文件：
+Nginx environment rules in `public/nginx.htaccess` file:
 
 ```
 location / {
