@@ -1,19 +1,19 @@
-#### 关于框架
+#### About the Framework
 
-官网：http://www.113344.com
+Website: http://www.113344.com
 
-作者：无念(24203741@qq.com) QQ群1：325825297 QQ群2：16008861
+Author: 无念 (24203741@qq.com) QQ Group 1: 325825297 QQ Group 2: 16008861
 
-#### 捐赠支持
+#### Donation Support
 
-WillPHP框架离不开您的支持，所有捐赠将用于官网维护和框架开发。
+The WillPHP framework relies on your support. All donations will be used for maintaining the official website and developing the framework.
 
-捐赠地址：https://gitee.com/willphp/yiyu
+Donation Link: https://gitee.com/willphp/yiyu
 
-微信捐赠：
+Donate via WeChat:
 
-![微信](img/wx.png)
+![WeChat](img/wx.png)
 
-支付宝捐赠：
+Donate via Alipay:
 
-![支付宝](img/alipaym.png)
+![Alipay](img/alipaym.png)
