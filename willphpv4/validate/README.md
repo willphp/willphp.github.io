@@ -1,89 +1,89 @@
-## 使用方法 :id=validate
+## Usage :id=validate
 
 ```php
-//规则:'表单字段', '验证规则[|...]', '错误提示[|...]', '[验证条件]'
+// Rules: 'form_field', 'validation rules[|...]', 'error message[|...]', '[validation condition]'
 $rule = [
-    ['email', 'email', '邮箱错误', AT_MUST]
+    ['email', 'email', 'Email is incorrect', AT_MUST]
 ];
 $data = ['email' => 'abc@163'];
-//参数：'规则设置', '[数据($_POST)]', '[批量验证(false)]'
+// Parameters: 'rule settings', '[data ($_POST)]', '[batch validation (false)]'
 $v=validate($rule, $data);
-$v->show(); //失败时调用控制器Error::_406($err)
-$v->getError(); //验证失败返回错误，通过返回空数组
-$v->isFail(); //验证失败返回true
+$v->show(); // Calls controller Error::_406($err) when failed
+$v->getError(); // Returns errors if validation fails, empty array if successful
+$v->isFail(); // Returns true if validation fails
 ```
 
-#### 验证条件
+#### Validation Conditions
 
 ```php
-const AT_MUST = 1; //必须(默认)
-const AT_NOT_NULL = 2; //有值
-const AT_NULL = 3; //空值
-const AT_SET = 4; //有字段
-const AT_NOT_SET = 5; //无字段
+const AT_MUST = 1; // Must (default)
+const AT_NOT_NULL = 2; // Not null
+const AT_NULL = 3; // Null
+const AT_SET = 4; // Field set
+const AT_NOT_SET = 5; // Field not set
 ```
 
->验证条件可以填写常量或数字，默认为 AT_MUST
+>Validation conditions can be filled with constants or numbers, default is AT_MUST
 
-## 验证规则 :id=rule
+## Validation Rules :id=rule
 
-#### 内置规则
-
-```
-unique      唯一验证 格式:unique:表名,主键
-required    字段必须且不为空
-captcha     验证码验证
-exists      必须有字段
-notExists   必须无字段
-confirm     字段必须相等 如：confirm:password
-regex       正则验证 如：regex:/^\d{5,20}$/
-url         验证url(filter_var验证)
-email       验证邮箱(filter_var验证)
-ip          验证ip(filter_var验证)
-float       验证浮点数(filter_var验证)
-int         验证数字(filter_var验证)
-```
-
-#### 特殊规则
+#### Built-in Rules
 
 ```
-正则表达式，如：/^\d{5,20}$/    
-闭包函数，如：fn($i)=>($i+1)
+unique      Unique validation Format: unique:table name,primary key
+required    Field must be present and not empty
+captcha     Captcha validation
+exists      Must have field
+notExists   Must not have field
+confirm     Fields must match e.g., confirm:password
+regex       Regex validation e.g., regex:/^\d{5,20}$/
+url         URL validation (filter_var validation)
+email       Email validation (filter_var validation)
+ip          IP validation (filter_var validation)
+float       Float validation (filter_var validation)
+int         Numeric validation (filter_var validation)
 ```
 
-#### 内置函数
-
-可使用自定义函数或PHP内置函数进行验证，如：
+#### Special Rules
 
 ```
-使用PHP内置函数：is_numeric
+Regular expressions, e.g., /^\d{5,20}$/
+Closure functions, e.g., fn($i)=>($i+1)
 ```
 
-#### 自定规则
+#### Built-in Functions
 
-可以在 `config/validate.php` 配置文件中定义自已的正则验证规则，如： 
+You can use custom functions or PHP built-in functions for validation, e.g.,
 
 ```
-'username' => '/^\w{5,20}$/', //用户名
-'password' => '/^\w{6,12}$/', //密码
-'string' => '/^\w+$/', //数字字母下划线
-'number' => '/^[0-9]*$/', //正数
-'chs' => '/^[\x7f-\xff]+$/', //汉字
-'mobile' => '/^1[3-9]\d{9}$/', //手机号
-'qq' => '/^[1-9][0-9]{4,12}$/', //qq号
-'idcard' => '/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/', //身份证号
-'bankcard' => '/^[1-9][0-9]{18}$/', //银行卡号
+Using PHP built-in function: is_numeric
 ```
 
-## 验证示例 :id=demo
+#### Custom Rules
+
+You can define your own regular expression validation rules in the `config/validate.php` configuration file, e.g.,
+
+```
+'username' => '/^\w{5,20}$/', // Username
+'password' => '/^\w{6,12}$/', // Password
+'string' => '/^\w+$/', // Alphanumeric underscore
+'number' => '/^[0-9]*$/', // Positive number
+'chs' => '/^[\x7f-\xff]+$/', // Chinese characters
+'mobile' => '/^1[3-9]\d{9}$/', // Mobile number
+'qq' => '/^[1-9][0-9]{4,12}$/', // QQ number
+'idcard' => '/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/', // ID card number
+'bankcard' => '/^[1-9][0-9]{18}$/', // Bank card number
+```
+
+## Validation Example :id=demo
 
 ```php
 $rule = [
-    ['name', 'required|unique:user,id', '必须|用户已存在', 2], //有值时
-    ['pwd', '/^\w{5,12}$/', '密码5~12位', 2], //有值时
-    ['mobile', 'mobile', '手机号错误', AT_MUST], //必须
-    ['email', 'email', '邮箱错误', 4], //有字段时
-    ['age', fn($val)=>($val>=18 && $val<=60), '年龄18~60'],
+    ['name', 'required|unique:user,id', 'Required|User already exists', 2], // Must have value
+    ['pwd', '/^\w{5,12}$/', 'Password must be 5~12 characters', 2], // Must have value
+    ['mobile', 'mobile', 'Mobile number is incorrect', AT_MUST], // Must
+    ['email', 'email', 'Email is incorrect', 4], // Field set
+    ['age', fn($val)=>($val>=18 && $val<=60), 'Age must be between 18 and 60'],
 ];
 $data = ['name'=>'', 'pwd'=>'123', 'mobile'=>'x12323332333', 'age'=>12];
 //$data['email'] = 'aaa';
