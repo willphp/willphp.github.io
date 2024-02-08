@@ -1,6 +1,6 @@
-### 本地配置
+### Local Configuration
 
-在本地环境时，可重命名`env.example.env`文件为`.env`本地配置文件：
+During local development, you can rename the `env.example.env` file to `.env` as the local configuration file:
 
 ```ini
 [APP]
@@ -18,16 +18,17 @@ DEFAULT[DB_PORT] = 3306
 DEFAULT[DB_CHARSET] = utf8
 DEFAULT[DB_PREFIX] = wp_
 ```
-本地配置默认开启调试模式和调试栏。可设置本地数据库连接信息。
 
-### 变量调试
+The local configuration enables debug mode and debug bar by default. You can configure the local database connection information.
+
+### Variable Debugging
 
 ```php
-dump($var1, ...$varN); //用法和var_dump一致
-dd($val1); //输出后中止程序的执行
-dump_const(); //输出用户常量
-trace($var1); //输出变量到调试栏
-log_value($var1); //记录变量到日志
+dump($var1, ...$varN); // Usage is the same as var_dump
+dd($val1); // Output and halt program execution
+dump_const(); // Output user-defined constants
+trace($var1); // Output variables to debug bar
+log_value($var1); // Log variables to the log
 ```
 
->在开发过程中出现问题，如修改配置，模板不生效，可尝试清空`runtime`目录。
+>If you encounter issues during development, such as configuration changes or template issues, try clearing the `runtime` directory.

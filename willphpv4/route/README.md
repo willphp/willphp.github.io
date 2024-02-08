@@ -1,59 +1,59 @@
-## 路由配置
+## Route Configuration
 
-可以在`config/route.php`中配置路由配置，如：
+You can configure route settings in `config/route.php`, as follows:
 
 ```php
-'default_controller' => 'index', //默认控制器
-'default_action' => 'index', //默认方法
-'get_var' => 's', //path_info的$_GET变量
-'check_regex' => '#^[a-zA-Z0-9\x7f-\xff\%\/\.\-_]+$#', //路由path_info验证正则
-'url_suffix' => '.html', //url函数自动添加后缀
-'clear_suffix' => ['.html'], //路由解析自动清除后缀
-'get_filter_empty' => false, //$_GET变量是否过滤空值和0
-//路由设置正则别名
+'default_controller' => 'index', // Default controller
+'default_action' => 'index', // Default action
+'get_var' => 's', // $_GET variable for path_info
+'check_regex' => '#^[a-zA-Z0-9\x7f-\xff\%\/\.\-_]+$#', // Route path_info validation regex
+'url_suffix' => '.html', // Automatically add suffix in url function
+'clear_suffix' => ['.html'], // Automatically clear suffix in route parsing
+'get_filter_empty' => false, // Filter empty values and 0 in $_GET variables
+// Route setting regex alias
 'alias' => [
-    ':num' => '[0-9\-]+', //数字
-    ':float' => '[0-9\.\-]+', //浮点数
-    ':string' => '[a-zA-Z0-9\-_]+', //\w
-    ':alpha' => '[a-zA-Z\x7f-\xff0-9-_]+', //包含中文
-    ':page' => '[0-9]+', //分页数字
-    ':any' => '.*', //任意
+    ':num' => '[0-9\-]+', // Number
+    ':float' => '[0-9\.\-]+', // Float
+    ':string' => '[a-zA-Z0-9\-_]+', // \w
+    ':alpha' => '[a-zA-Z\x7f-\xff0-9-_]+', // Including Chinese characters
+    ':page' => '[0-9]+', // Page number
+    ':any' => '.*', // Any
 ],
 ```
 
-## 应用路由
+## Application Routes
 
-路由规则在 `route/应用名.php` 中设置，如：
+Route rules are set in `route/application_name.php`, like:
 
 ```php  
-//格式：'路由(表达式)' => '控制器/方法/[参数/匹配值]'
+// Format: 'Route (expression)' => 'Controller/method/[parameter/match value]'
 'index' => 'index/index',
 'index_p(:num)' => 'index/index/p/${1}',
 'cid(:num)_p(:num)' => 'index/index/cid/${1}p/${2}',
 ```
 
-## URL生成
+## URL Generation
 
-url函数会根据当前应用路由设置生成对应url链接。格式如下：
+The `url` function generates the corresponding URL link based on the current application route settings. The format is as follows:
 
 ```php
-url('控制器/方法', [参数], [后缀名]);    
+url('Controller/method', [parameters], [suffix]);    
 ```
 
-示例如下:
+For example:
 
 ```php
-echo url('index/index'); //index.html 
-//前边加@不经路由
-echo url('@index/index'); //index/index.html 
-//不设置控制器，默认当前控制器
-echo url('test'); //index/test.html 
-//test/index
-echo url('test/index'); //test/index.html 
-//index/index/p/1 
-echo url('index?p=1'); //index_p1.html   
-//index/index/p/2
-echo url('index', ['p'=>2], '.php'); //index_p2.php 
-echo url('index',['cid'=>1, 'p'=>2]); //cid1_p2.html
+echo url('index/index'); // index.html 
+// Prepend @ to bypass route
+echo url('@index/index'); // index/index.html 
+// If controller is not set, defaults to the current controller
+echo url('test'); // index/test.html 
+// test/index
+echo url('test/index'); // test/index.html 
+// index/index/p/1 
+echo url('index?p=1'); // index_p1.html   
+// index/index/p/2
+echo url('index', ['p'=>2], '.php'); // index_p2.php 
+echo url('index',['cid'=>1, 'p'=>2]); // cid1_p2.html
 ```
      

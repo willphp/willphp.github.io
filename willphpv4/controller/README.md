@@ -1,6 +1,6 @@
-## 控制定义
+## Controller Definition
 
-在`app/应用名/controller`中定义控制器类，如：
+Define controller classes in `app/application_name/controller`, for example:
 
 ```php
 declare(strict_types=1);
@@ -14,7 +14,7 @@ class Index
 }
 ```
 
-#### 渲染输出
+#### Rendering Output
 
 ```php
 declare(strict_types=1);
@@ -32,9 +32,9 @@ class Index
 }
 ```
 
-#### 错误处理
+#### Error Handling
 
-在`app/应用名/controller/Error.php`中处理错误，如：
+Handle errors in `app/application_name/controller/Error.php`, for example:
 
 ```php
 declare(strict_types=1);
@@ -42,35 +42,35 @@ namespace app\index\controller;
 class Error
 {
     use \willphp\core\Jump;
-    //默认处理
+    // Default handling
     public function __call($method, $args)
     {
-        $msg = $args[0] ?? '出错了！';
+        $msg = $args[0] ?? 'An error occurred!';
         $code = str_starts_with($method, '_') ? substr($method, 1) : 400;
         $this->error($msg, (int)$code);
     }
-    //自定义控制器或方法不存在页面
+    // Custom controller or method does not exist page
     public function _404(string $msg, array $args = []) {
         dump($msg, $args);
     }
-    //自定义访问非公用方法页面
+    // Custom accessing non-public method page
     public function _405(string $msg, array $args = []) {
         dump($msg, $args);
     }
-    //自定义验证失败页面
+    // Custom validation failed page
     public function _406(string $msg, array $args = []) {
         dump($msg, $args);
     }
-    //自定义参数不足页面
+    // Custom parameter insufficient page
     public function _416(string $msg, array $args = []) {
         dump($msg, $args);
     }
 }
 ```
 
-## 中间件类
+## Middleware Classes
 
-#### 使用示例
+#### Usage Example
 
 ```php
 declare(strict_types=1);
@@ -78,9 +78,9 @@ namespace app\index\controller;
 class Index
 {
     protected $middleware = [ 
-        'common', //所有方法
-        'auth' => ['except' => ['login']], //除login外
-        'test' => ['only' => ['test']], //只是test 
+        'common', // All methods
+        'auth' => ['except' => ['login']], // Except login
+        'test' => ['only' => ['test']], // Only test
     ]; 
     public function index() {           
         return 'index';
@@ -94,41 +94,42 @@ class Index
 }
 ```
 
-#### 配置
+#### Configuration
 
-控制器中间件在`config/middleware.php`中设置，如：
+Set controller middleware in `config/middleware.php`, for example:
 
 ```php
 'controller' => [
     'common' => [
-        \middleware\controller\Filter::class, //公共
+        \middleware\controller\Filter::class, // Common
     ],
     'auth' => [
-        \middleware\controller\Auth::class, //验证
+        \middleware\controller\Auth::class, // Authentication
     ],
     'test' => [
-        \middleware\controller\Test::class, //测试
+        \middleware\controller\Test::class, // Test
     ],
 ],   
 ```
-#### 中间件类
 
-设置中间件类`\middleware\controller\Test.php`，代码如下：
+#### Middleware Class
+
+Set middleware class in `\middleware\controller\Test.php`, code as follows:
 
 ```php
 declare(strict_types=1);
 namespace middleware\controller;
 class Test {	
     public function run($next){	
-        trace('执行测试中间件');
+        trace('Executing test middleware');
         $next();
     }
 }
 ```
 
-## 请求处理
+## Request Handling
 
-#### 参数绑定
+#### Parameter Binding
 
 ```php
 declare(strict_types=1);
@@ -142,60 +143,62 @@ class Index
 }
 ```
 
-#### 必须参数
+#### Required Parameters
 
-当参数没有默认值(`$req`除外)时必须用`$_GET`或`$_POST`转参，否则跳转方法：
+When parameters have no default value (except for `$req`), they must be passed through `$_GET` or `$_POST`, otherwise jump method:
 
 ```
-Error::_416() //显示： index/index：id 参数不足
+Error::_416() // Display: index/index: id parameter is insufficient
 ```
 
-正确的`GET`请求：
+Correct `GET` request:
 
 ```
 ?id=10&name=php
 ```
 
-自动转换 参数类型，如id是int类型传字符会变成0：
+Automatic conversion parameter type, if the id is of type int, passing characters will become 0:
 
 ```
-?id=abc&name=php //id=0&name=php
+?id=abc&name=php // id=0&name=php
 ```
 
-#### 特定参数
+#### Specific Parameters
 
-`array $req`为框架特定参数，值为`绑定参数，GET，POST`三者合并。
+`array $req` is a specific parameter of the framework, and its value is the combination of `binding parameters, GET, POST`.
 
-#### 自动过滤
+#### Automatic Filtering
 
-可在`config/filter.php`中设置`$req`参数的自动过滤处理，如：
+You can set automatic filtering processing for `$req` parameters in `config/filter.php`, for example:
 
 ```php
-'filter_req' => true, //是否开启req过滤
-'func_html' => 'remove_xss', //html字段处理函数(多个函数,分隔)
-'func_except_html' => 'clear_html', //html除外字段处理函数
-//html字段
-'html_fields' => ['phtml'], //html字段列表
-'html_like' => 'content', //html字段包含
-//字段自动处理
+'filter_req' => true, // Whether to enable req filtering
+'func_html' => 'remove_xss', // html field processing function (multiple functions, separated by commas)
+'func_except_html' => 'clear_html', // html except field processing function
+// html fields
+'html_fields' => ['phtml'], // html field list
+'html_like' => 'content', // html field contains
+// Field automatic processing
 'field_auto' => [
     'id,p' => 'intval',
 ],
-'func_out' => 'stripslashes', //模板输出过滤(全部)
-'func_out_except_html' => 'htmlspecialchars', //模板输出过滤(html除外)
+'func_out' => 'stripslashes', // Template output filtering (all)
+'func_out_except_html' => 'htmlspecialchars', // Template output filtering (except html)
 ```
 
-请求示例：
+Request example:
 
 ```
 ?id=aa&name=<b>bbb</b>&p=bb
 ```
 
-返回结果：
+Return result:
 
 ```
-int(0) //id
-string(10) "<b>bbb</b>"  //name
+int(0) // id
+string(10
+
+) "<b>bbb</b>" // name
 array(3) {
   ["id"] => int(0)
   ["name"] => string(3) "bbb"
@@ -203,22 +206,22 @@ array(3) {
 }
 ```
 
-## 请求获取
+## Request Retrieval
 
->在控制器中推荐使用绑定参数来获取
+> In the controller, it is recommended to use binding parameters to obtain.
 
 ```php
-input('get.'); //获取$_GET
-input('post.'); //获取$_POST
-input('get.name'); //不存在返回 ''
-input('post.cid', 0, 'intval'); //获取intval($_GET['cid'])
-input('id', 1, 'intval'); //获取$_POST['id']或$_GET['id']   
-input('get.pwd', '1', ['intval','md5']); //获取md5(intval($_GET['pwd']))   
+input('get.'); // Get $_GET
+input('post.'); // Get $_POST
+input('get.name'); // Return ''
+input('post.cid', 0, 'intval'); // Get intval($_GET['cid'])
+input('id', 1, 'intval'); // Get $_POST['id'] or $_GET['id']   
+input('get.pwd', '1', ['intval','md5']); // Get md5(intval($_GET['pwd']))   
 ```
 
-## 控制跳转
+## Control Redirect
 
-可挂载`\willphp\core\Jump`模块实现跳转功能：
+You can mount the `\willphp\core\Jump` module to achieve redirect function:
 
 ```php
 declare(strict_types=1);
@@ -229,24 +232,24 @@ class Index
 }
 ```
 
-#### 模块方法
+#### Module Method
 
 ```php
-success($msg = '', string $url = null) //成功提示(自动判断是否返回Json格式)
-error($msg = '', string $url = null, int $code = 400) //失败提示(同上)
-_jump($info, bool $status = false, string $url = null) //提示整合(同上)
+success($msg = '', string $url = null) // Success prompt (automatically determine whether to return Json format)
+error($msg = '', string $url = null, int $code = 400) // Failure prompt (same as above)
+_jump($info, bool $status = false, string $url = null) // Integrated prompt (same as above)
 _json(int $code = 200, string $msg = '', array $data = null, array $extend = [])
-_url(string $url, int $time = 0) //url跳转
-isAjax() //是否ajax提交
-isPost() //是否post提交
-isGet(): //是否get提交
-isPut(): //是否put提交
-isDelete(): //是否delete提交
+_url(string $url, int $time = 0) // url redirection
+isAjax() // Whether it is ajax submission
+isPost() // Whether it is post submission
+isGet(): // Whether it is get submission
+isPut(): // Whether it is put submission
+isDelete(): // Whether it is delete submission
 ```
 
-> 如果应用在`config/app.php`文件中的`api_list`列表里，提示返回Json格式
+> If the application is in the `api_list` list in the `config/app.php` file, the prompt returns in Json format.
 
-#### 使用示例
+#### Usage Example
 
 ```php
 public function index()
@@ -259,12 +262,12 @@ public function index()
 public function msg(int $id = 1)
 {
     if ($id == 1) {
-        $this->success('成功1', 'index/index');
+        $this->success('Success1', 'index/index');
     } elseif ($id == 2) {
-        $this->error('失败1');
+        $this->error('Failure1');
     }
-    //跳转整合
-    $this->_jump(['成功2', '失败2'], ($id == 3), 'index/index');
+    // Jump integration
+    $this->_jump(['Success2', 'Failure2'], ($id == 3), 'index/index');
 }
 public function json()
 {

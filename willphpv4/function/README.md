@@ -1,35 +1,35 @@
-### 助手函数
+### Helper Functions
 
 #### Cookie
 
 ```php
-//判断
+// Check
 if (!cookie('?time')) {
-    cookie('time', time(), 30); //设置
+    cookie('time', time(), 30); // Set
 }
-$time = cookie('time'); //获取
+$time = cookie('time'); // Get
 echo $time;
-cookie('time', null); //清除
-$all = cookie(); //获取全部
+cookie('time', null); // Delete
+$all = cookie(); // Get all
 dump($all);
-cookie(null); //清空全部
+cookie(null); // Clear all
 ```
 
 #### Session
 
 ```php
 if (!session('?time')) {
-    session('time', time()); //设置
+    session('time', time()); // Set
 }
-$time = session('time'); //获取
+$time = session('time'); // Get
 echo $time;
-session('time', null); //清除
-$all = session(); //获取全部
+session('time', null); // Delete
+$all = session(); // Get all
 dump($all);
-session(null); //清空全部
+session(null); // Clear all
 ```
 
-#### 视图
+#### View
 
 ```php
 public function index()
@@ -43,7 +43,7 @@ public function index()
 }
 ```
 
-#### URL生成
+#### URL Generation
 
 ```php
 echo url('blog/view', ['id'=>1]);
@@ -52,7 +52,8 @@ echo url('about', [], '.shtml');
 echo url('[back]');
 echo url('[history]');
 ```
-#### 输入获取
+
+#### Input Retrieval
 
 ```php
 echo input('get.id', 1, 'intval');
@@ -64,114 +65,112 @@ dump(input('post.'));
 dump(input('get.'));
 ```
 
-#### 表单验证
+#### Form Validation
 
 ```php
-//规则:'表单字段', '验证规则[|...]', '错误提示[|...]', '[验证条件]'
+// Rule: 'form_field', 'validation_rule[|...]', 'error_message[|...]', '[validation_condition]'
 $rule = [
-    ['email', 'email', '邮箱错误', AT_MUST]
+    ['email', 'email', 'Email error', AT_MUST]
 ];
 $data = ['email' => 'abc@163'];
-//参数：'规则设置', '[数据($_POST)]', '[批量验证(false)]'
+// Parameters: 'rule_setting', '[data($_POST)]', '[batch_validation(false)]'
 $v=validate($rule, $data);
-$v->show(); //失败时调用控制器Error::_406($err)
-$v->getError(); //验证失败返回错误，通过返回空数组
-$v->isFail(); //验证失败返回true
+$v->show(); // Call controller Error::_406($err) when failed
+$v->getError(); // Return errors when validation fails, return empty array if passed
+$v->isFail(); // Return true if validation fails
 ```
 
-#### 数据库
+#### Database
 
-格式：
+Format:
 
 ```
-db('表名',[数据库配置])->方法(参数)->方法();
+db('table_name',[database_config])->method(arguments)->method();
 ```
-示例： 
+Example:
 
 ```php
 $list = db('blog')->field('id,title')->select();
 ```
 
->此函数返回 `Db::connect($config, $table)`，后置为数据库操作方法。
+>This function returns `Db::connect($config, $table)`, with subsequent methods for database operations.
 
-#### 模型
+#### Model
 
 ```php
-//实例化app/common/model/Blog.php
+// Instantiate app/common/model/Blog.php
 $blog = model('common.blog');
-//实例化app/当前应用/model/BlogCate.php
+// Instantiate app/current_application/model/BlogCate.php
 $cate = model('blog_cate'); 
 ```
->此函数返回模型类单例，后置为模型或数据库操作方法。
+>This function returns a singleton instance of the model class, with subsequent methods for model or database operations.
 
-#### 部件
+#### Widget
 
 ```php
-// 实例化app/common/widget/Blog.php
+// Instantiate app/common/widget/Blog.php
 $blog = widget('common.blog'); 
-//实例化app/当前应用/widget/BlogCate.php
+// Instantiate app/current_application/widget/BlogCate.php
 $cate = widget('blog_cate')->get();
 ```
->此函数返回部件类单例，后置为部件类方法。
+>This function returns a singleton instance of the widget class, with subsequent methods for the widget class.
 
-#### 配置
+#### Configuration
 
-快速获取：
-
-```php
-$id = get_config('site.id', 0);//默认0
-```
-
-整合函数：
+Quick access:
 
 ```php
-config('site.name', 'php'); //设置
-$bool = config('?site.id'); //判断
-$all = config(); //全部
-$site = config('site'); //获取site
-$id = config('site.id'); //获取site.id 
-$id = config('?site.id', 1); //获取,默认1
-$id = config('?id', 1, 'site'); //同上
-$id = site('?id', 1); //简化site,同上
+$id = get_config('site.id', 0);//Default 0
 ```
 
-#### 缓存
-
-获取并设置：
+Integrated functions:
 
 ```php
-$id = get_cache('id', fn()=>time(), 10);//10秒有效
+config('site.name', 'php'); //Set
+$bool = config('?site.id'); //Check
+$all = config(); //Get all
+$site = config('site'); //Get site
+$id = config('site.id'); //Get site.id 
+$id = config('?site.id', 1); //Get, default 1
+$id = config('?id', 1, 'site'); //Same as above
+$id = site('?id', 1); //Simplified version of site, same as above
 ```
 
->有效时间默认为0，永久有效
+#### Cache
 
-整合函数：
+Get and set:
 
 ```php
-cache('time', time()); //设置(永久)
-cache('id', 1, 30); //设置(30秒)
-$bool = cache('?id'); //判断
-$id = cache('id'); //获取
-cache('name', null); //删除
-cache(null); //清空
+$id = get_cache('id', fn()=>time(), 10);//Valid for 10 seconds
 ```
 
-#### 调试
+>Default validity period is 0, permanent validity.
 
-格式化输出：
+Integrated functions:
 
 ```php
-dump($_SERVER); //变量
-dd([1, 2]); //输出并结束
-dump_const(); //用户常量
+cache('time', time()); //Set (permanent)
+cache('id', 1, 30); //Set (30 seconds)
+$bool = cache('?id'); //Check
+$id = cache('id'); //Get
+cache('name', null); //Delete
+cache(null); //Clear
 ```
 
-调试栏输出：
+#### Debugging
+
+Formatted output:
 
 ```php
-trace(['id'=>1], 'debug'); //默认debug
-trace('error info', 'error'); //错误
-trace('query sql', 'sql'); //sql语句
+dump($_SERVER); //Variable
+dd([1, 2]); //Output and exit
+dump_const(); //User constants
 ```
 
+Output to debug bar:
 
+```php
+trace(['id'=>1], 'debug'); //Default: debug
+trace('error info', 'error'); //Error
+trace('query sql', 'sql'); //SQL statement
+```
